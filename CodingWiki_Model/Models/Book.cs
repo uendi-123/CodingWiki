@@ -11,6 +11,6 @@ namespace CodingWiki_Model.Models
         public int BookID { get; set; }
         public string Title { get; set; }
         public string ISBN { get; set; }    
-        public double Price { get; set; }
+        public decimal Price { get; set; }
     }
 }
