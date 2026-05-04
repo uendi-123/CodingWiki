@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodingWiki_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260503221503_AddGenresToDb")]
-    partial class AddGenresToDb
+    [Migration("20260503232246_renameDisplayColumninGenre")]
+    partial class renameDisplayColumninGenre
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,25 @@ namespace CodingWiki_DataAccess.Migrations
                     b.HasKey("BookID");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("CodingWiki_Model.Models.Genre", b =>
+                {
+                    b.Property<int>("GenreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreId"));
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GenreName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GenreId");
+
+                    b.ToTable("Genres");
                 });
 #pragma warning restore 612, 618
         }
