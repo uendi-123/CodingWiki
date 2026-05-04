@@ -11,9 +11,10 @@ namespace CodingWiki_Model.Models
         //[Key]
         public int BookID { get; set; }
         public string Title { get; set; }
-        public string ISBN { get; set; }
         [MaxLength(50)]
         [Required]
+        public string ISBN { get; set; }
+        
         public decimal Price { get; set; }
         [NotMapped]
         public string PriceRange { get; set; }
