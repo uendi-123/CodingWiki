@@ -20,5 +20,7 @@ namespace CodingWiki_Model.Models
         public string PriceRange { get; set; }
         public BookDetail BookDetail { get; set; }
 
+
+
     }
 }

@@ -9,13 +9,16 @@ namespace CodingWiki_Model.Models
     public class BookDetail
     {
         [Key]
-        public int BookDetailId { get; set; }
+        
+        public int BookDetail_Id { get; set; }
         [Required]
         public int NumberOfChapters { get; set; }
         public int NumberOfPages { get; set; }
         public string Weight { get; set; }
+
         [ForeignKey("Book")]
-        public int BookID { get; set; }
+        public int Book_ID { get; set; }
+
         public Book Book { get; set; }
     }
 }
