@@ -14,11 +14,13 @@ namespace CodingWiki_DataAccess.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<BookAuthorMap> BookAuthorMaps { get; set; }
         public DbSet<BookDetail> BookDetails { get; set; }
         public DbSet<FluentBookDetail> BookDetail_fluent { get; set; }
         public DbSet<FluentBook> Fluent_Books { get; set; }
         public DbSet<FluentAuthor> Fluent_Authors { get; set; }
         public DbSet<FluentPublisher> Fluent_Publisher { get; set; }
+        public DbSet<FluentBookAuthorMap> Fluent_BookAuthorMap { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -49,7 +51,11 @@ namespace CodingWiki_DataAccess.Data
             modelBuilder.Entity<FluentPublisher>().HasKey(u => u.Publisher_Id);
             modelBuilder.Entity<FluentPublisher>().Property(u => u.Name).IsRequired();
 
-
+            modelBuilder.Entity<FluentBookAuthorMap>().HasKey(u => new { u.Author_Id, u.Book_Id });
+            modelBuilder.Entity<FluentBookAuthorMap>().HasOne(b => b.Book).WithMany(u => u.BookAuthorMap)
+                .HasForeignKey(u => u.Book_Id);
+            modelBuilder.Entity<FluentBookAuthorMap>().HasOne(b => b.Author).WithMany(u => u.BookAuthorMap)
+                .HasForeignKey(u => u.Author_Id);
 
 
             modelBuilder.Entity<Book>().Property(u=> u.Price).HasPrecision(10, 5);
