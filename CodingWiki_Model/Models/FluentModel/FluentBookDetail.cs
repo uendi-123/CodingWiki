@@ -13,9 +13,8 @@ namespace CodingWiki_Model.Models
         public int NumberOfPages { get; set; }
         public string Weight { get; set; }
 
-        //[ForeignKey("Book")]
-        //public int Book_ID { get; set; }
+        public int Book_ID { get; set; }
 
-        //public FluentBook Book { get; set; }
+        public FluentBook Book { get; set; }
     }
 }
