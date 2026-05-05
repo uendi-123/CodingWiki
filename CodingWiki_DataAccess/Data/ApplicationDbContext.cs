@@ -1,4 +1,5 @@
-﻿using CodingWiki_Model.Models;
+﻿using CodingWiki_DataAccess.FluentConfig;
+using CodingWiki_Model.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,39 +29,15 @@ namespace CodingWiki_DataAccess.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FluentBookDetail>().ToTable("Fluent_BookDetails");
-            modelBuilder.Entity<FluentBookDetail>().Property(u=>u.NumberOfChapters).HasColumnName("NoOfChapters");
-            modelBuilder.Entity<FluentBookDetail>().Property(u => u.NumberOfChapters).IsRequired();
-            modelBuilder.Entity<FluentBookDetail>().HasKey(u => u.BookDetail_Id);
-            modelBuilder.Entity<FluentBookDetail>().HasOne(b=>b.Book).WithOne(b=>b.BookDetail)
-                .HasForeignKey<FluentBookDetail>(u=>u.Book_ID);
-
-            modelBuilder.Entity<FluentBook>().Property(u => u.ISBN).HasMaxLength(50);
-            modelBuilder.Entity<FluentBook>().Property(u => u.ISBN).IsRequired();
-            modelBuilder.Entity<FluentBook>().HasKey(u => u.BookID);
-            modelBuilder.Entity<FluentBook>().Ignore(u => u.PriceRange);
-            modelBuilder.Entity<FluentBook>().HasOne(b => b.Publisher).WithMany(u =>u.Books)
-                .HasForeignKey(u => u.Publisher_ID);
-
-            modelBuilder.Entity<FluentAuthor>().HasKey(u => u.Author_Id);
-            modelBuilder.Entity<FluentAuthor>().Property(u => u.FirstName).HasMaxLength(50);
-            modelBuilder.Entity<FluentAuthor>().Property(u => u.FirstName).IsRequired();
-            modelBuilder.Entity<FluentAuthor>().Property(u => u.LastName).IsRequired();
-            modelBuilder.Entity<FluentAuthor>().Ignore(u => u.FullName);
-
-            modelBuilder.Entity<FluentPublisher>().HasKey(u => u.Publisher_Id);
-            modelBuilder.Entity<FluentPublisher>().Property(u => u.Name).IsRequired();
-
-            modelBuilder.Entity<FluentBookAuthorMap>().HasKey(u => new { u.Author_Id, u.Book_Id });
-            modelBuilder.Entity<FluentBookAuthorMap>().HasOne(b => b.Book).WithMany(u => u.BookAuthorMap)
-                .HasForeignKey(u => u.Book_Id);
-            modelBuilder.Entity<FluentBookAuthorMap>().HasOne(b => b.Author).WithMany(u => u.BookAuthorMap)
-                .HasForeignKey(u => u.Author_Id);
-
 
             modelBuilder.Entity<Book>().Property(u=> u.Price).HasPrecision(10, 5);
-
             modelBuilder.Entity<BookAuthorMap>().HasKey(u => new { u.Author_Id, u.Book_Id });
+
+            modelBuilder.ApplyConfiguration(new FluentBookConfig());
+            modelBuilder.ApplyConfiguration(new FluentAuthorConfig());
+            modelBuilder.ApplyConfiguration(new FluentPublisherConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookAuthorMapConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookDetailConfig());
 
             modelBuilder.Entity<Book>().HasData(
                 new Book { BookID=1,Title="Spider without Duty",ISBN="123B13",Price=10.99m,Publisher_ID=1},
