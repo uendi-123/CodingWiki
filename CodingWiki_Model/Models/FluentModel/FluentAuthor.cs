@@ -21,6 +21,7 @@ namespace CodingWiki_Model.Models
         {
             get { return $"{FirstName} {LastName}"; }
         }
+        public List<FluentBook> Books { get; set; }
         //public List<FluentBookAuthorMap> BookAuthorMap { get; set; }
     }
 }
