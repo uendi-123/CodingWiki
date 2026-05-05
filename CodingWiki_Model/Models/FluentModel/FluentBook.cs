@@ -15,11 +15,8 @@ namespace CodingWiki_Model.Models
         public decimal Price { get; set; }
         public string PriceRange { get; set; }
         public FluentBookDetail BookDetail { get; set; }
-
-        //[ForeignKey("Publisher")]
-        //public int Publisher_ID { get; set; }
-
-        //public FluentPublisher Publisher { get; set; }
+        public int Publisher_ID { get; set; }
+        public FluentPublisher Publisher { get; set; }
 
         //public List<FluentBookAuthorMap> BookAuthorMap { get; set; }
     }
