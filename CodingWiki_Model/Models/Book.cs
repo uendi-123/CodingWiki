@@ -20,7 +20,10 @@ namespace CodingWiki_Model.Models
         public string PriceRange { get; set; }
         public BookDetail BookDetail { get; set; }
 
+        [ForeignKey("Publisher")]
+        public int Publisher_ID { get; set; }
+        public Publisher Publisher { get; set; }
 
-
+        public List<Author> Authors { get; set; }
     }
 }

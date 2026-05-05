@@ -16,12 +16,13 @@ namespace CodingWiki_Model.Models
         [Required]
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
-        
+
         public string Location { get; set; }
         [NotMapped]
         public string FullName
         {
             get { return $"{FirstName} {LastName}"; }
         }
+        public List<Book> Books { get; set; }
     }
 }
