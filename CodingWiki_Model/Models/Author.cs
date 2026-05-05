@@ -23,6 +23,6 @@ namespace CodingWiki_Model.Models
         {
             get { return $"{FirstName} {LastName}"; }
         }
-        public List<Book> Books { get; set; }
+        public List<BookAuthorMap> BookAuthorMap { get; set; }
     }
 }

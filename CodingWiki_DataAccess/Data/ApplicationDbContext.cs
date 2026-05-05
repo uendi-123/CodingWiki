@@ -22,6 +22,9 @@ namespace CodingWiki_DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Book>().Property(u=> u.Price).HasPrecision(10, 5);
+
+            modelBuilder.Entity<BookAuthorMap>().HasKey(u => new { u.Author_Id, u.Book_Id });
+
             modelBuilder.Entity<Book>().HasData(
                 new Book { BookID=1,Title="Spider without Duty",ISBN="123B13",Price=10.99m,Publisher_ID=1},
                 new Book { BookID = 2,Title = "Fortune of time",ISBN = "121B13",Price = 11.99m,Publisher_ID=1}
