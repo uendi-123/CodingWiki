@@ -12,8 +12,25 @@ Console.WriteLine("Hello, World!");
 //context.Database.Migrate();
 //}
 //}
-AddBook();
-GetAllBook();
+//AddBook();
+//GetAllBook();
+GetBook();
+void GetBook()
+{
+    try
+    {
+        using var context = new ApplicationDbContext();
+        var book = context.Books.FirstOrDefault(u=>u.Title=="Cookie Jar");
+        Console.WriteLine(book.Title + " - " + book.ISBN);
+        //foreach (var book in books)
+        //{
+            //Console.WriteLine(book.Title + " - " + book.ISBN);
+        //}
+        
+    }
+    catch (Exception ex) { }
+}
+
 void GetAllBook()
 {
     using var context = new ApplicationDbContext();
