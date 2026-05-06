@@ -1,4 +1,5 @@
 ﻿using CodingWiki_DataAccess.Data;
+using CodingWiki_Model.Models;
 using Microsoft.EntityFrameworkCore;
 
 Console.WriteLine("Hello, World!");
@@ -11,7 +12,7 @@ Console.WriteLine("Hello, World!");
 //context.Database.Migrate();
 //}
 //}
-
+AddBook();
 GetAllBook();
 void GetAllBook()
 {
@@ -21,4 +22,13 @@ void GetAllBook()
     {
         Console.WriteLine(book.Title+" - "+book.ISBN);
     }
+}
+
+
+void AddBook()
+{
+    Book book = new Book { Title = "New EF Core Book",ISBN="121212223",Price=10.93m,Publisher_ID=1};
+    using var context = new ApplicationDbContext();
+    var books = context.Books.Add(book);
+    context.SaveChanges();
 }
