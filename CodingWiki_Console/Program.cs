@@ -20,12 +20,14 @@ void GetBook()
     try
     {
         using var context = new ApplicationDbContext();
-        var book = context.Books.FirstOrDefault(u=>u.Title=="Cookie Jar");
-        Console.WriteLine(book.Title + " - " + book.ISBN);
-        //foreach (var book in books)
-        //{
-            //Console.WriteLine(book.Title + " - " + book.ISBN);
-        //}
+        //var book = context.Books.Find(6); //usato per l'id
+        //var book=context.Books.Single(u=>u.Publisher_ID==3); //Deve restiture un solo risultato, altrimenti lancia un'eccezione
+        var books = context.Books.Where(u=>u.ISBN.Contains("12"));
+        //Console.WriteLine(book.Title + " - " + book.ISBN);
+        foreach (var book in books)
+        {
+            Console.WriteLine(book.Title + " - " + book.ISBN);
+        }
         
     }
     catch (Exception ex) { }
