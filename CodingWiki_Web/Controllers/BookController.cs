@@ -16,6 +16,11 @@ namespace CodingWiki_Web.Controllers
         public IActionResult Index()
         {
             List<Book> objList = _db.Books.ToList();
+            foreach(var obj in objList)
+            {
+                //obj.Publisher = _db.Publishers.Find(obj.Publisher_ID);
+                _db.Entry(obj).Reference(u=>u.Publisher).Load();
+            }
             return View(objList);
         }
         public IActionResult Upsert(int? id)
@@ -41,5 +46,70 @@ namespace CodingWiki_Web.Controllers
             }
             return View(obj);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upsert(BookVM obj)
+        {
+            if (obj.Book.BookID == 0)
+            {
+                //create
+                await _db.Books.AddAsync(obj.Book);
+            }
+            else
+            {
+                //update
+                _db.Books.Update(obj.Book);
+            }
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            
+        }
+        public IActionResult Details(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            BookDetail obj = new();
+            //edit
+            obj.Book = _db.Books.FirstOrDefault(u => u.BookID == id);
+            obj= _db.BookDetails.FirstOrDefault(u => u.Book_ID == id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(BookDetail obj)
+        {
+            if (obj.BookDetail_Id == 0)
+            {
+                //create
+                await _db.BookDetails.AddAsync(obj);
+            }
+            else
+            {
+                //update
+                _db.BookDetails.Update(obj);
+            }
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            Book obj = new();
+            obj = _db.Books.FirstOrDefault(u => u.BookID == id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.Books.Remove(obj);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
