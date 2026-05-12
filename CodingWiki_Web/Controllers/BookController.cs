@@ -110,6 +110,39 @@ namespace CodingWiki_Web.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult ManageAuthors(int id)
+        {
+            BookAuthorVM obj = new() 
+            { 
+                BookAuthorList=_db.BookAuthorMaps.Include(u=>u.Author).Include(u=>u.Book)
+                .Where(u => u.Book_Id == id).ToList(),
+                BookAuthor = new()
+                {
+                    Book_Id = id
+                },
+                Book=_db.Books.FirstOrDefault(u => u.BookID == id)
+            };
+            List<int> tempListOfAssignedAuthor=obj.BookAuthorList.Select(u => u.Author_Id).ToList();
+
+            var tempList = _db.Authors.Where(u => !tempListOfAssignedAuthor.Contains(u.Author_Id)).ToList();
+            obj.AuthorList=tempList.Select(i => new SelectListItem
+            {
+                Text = i.FullName,
+                Value = i.Author_Id.ToString()
+            });
+            return View(obj);
+        }
+        [HttpPost]
+        public IActionResult ManageAuthors(BookAuthorVM bookAuthorVM)
+        {
+            if (bookAuthorVM.BookAuthor.Book_Id != 0 && bookAuthorVM.BookAuthor.Author_Id != 0)
+            {
+                _db.BookAuthorMaps.Add(bookAuthorVM.BookAuthor);
+                _db.SaveChanges();
+            }
+            return RedirectToAction(nameof(ManageAuthors), new { @id = bookAuthorVM.BookAuthor.Book_Id });
+        }
         public async Task<IActionResult> Playground() 
         {
             IQueryable<Book> BookList1 = _db.Books;
